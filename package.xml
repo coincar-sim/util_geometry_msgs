@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>util_geometry_msgs</name>
+  <version>1.0.0</version>
+  <description>Utils for geometry_msgs</description>
+
+  <license>BSD</license>
+  <maintainer email="maximilian.naumann@kit.edu">Maximilian Naumann</maintainer>
+  <author email="maximilian.naumann@kit.edu">Maximilian Naumann</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>mrt_cmake_modules</build_depend>
+  <test_depend>gtest</test_depend>
+
+  <depend>geometry_msgs</depend>
+  <depend>eigen</depend>
+  <depend>eigen_conversions</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+  <depend>tf2_eigen</depend>
+  <depend>util_eigen_geometry</depend>
+
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+  </export>
+</package>
