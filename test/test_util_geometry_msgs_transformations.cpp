@@ -32,9 +32,9 @@
 
 #define EXPECT_COVARIANCE_NEAR(expected, actual, abs_err)                    \
     {                                                                        \
-        ASSERT_EQ(36, expected.size()) << "A covariance must have size 36!"; \
-        ASSERT_EQ(36, actual.size()) << "A covariance must have size 36!";   \
-        for (std::size_t i = 0; i < 36; ++i) {                               \
+        ASSERT_EQ(36u, expected.size()) << "A covariance must have size 36!"; \
+        ASSERT_EQ(36u, actual.size()) << "A covariance must have size 36!";   \
+        for (std::size_t i = 0; i < 36u; ++i) {                               \
             EXPECT_NEAR(expected[i], actual[i], abs_err);                    \
         }                                                                    \
     }
