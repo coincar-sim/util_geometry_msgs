@@ -185,6 +185,34 @@ void throwIfScaleInvalid(const double scale) {
 
 namespace computations{
 
+geometry_msgs::Pose calcDeltaPose(const geometry_msgs::Pose& startPose, const geometry_msgs::Pose& endPose) {
+    // we have: fixed frame <--T_ff_sP-- startPose  AND  fixed frame <--T_ff_eP-- endPose
+    // we want: startPose <--T_sP_eP-- endPose ( = deltaPose )
+    Eigen::Isometry3d startPoseEigen, endPoseEigen, startPoseEigenInv, deltaPoseEigen;
+    geometry_msgs::Pose deltaPoseGeom;
+
+    tf::poseMsgToEigen(startPose, startPoseEigen);
+    tf::poseMsgToEigen(endPose, endPoseEigen);
+
+    // invert startPose
+    startPoseEigenInv = startPoseEigen.inverse();
+    // such that we have: startPose <-- INVERSE(T_ff_sP)-- fixed frame <--T_ff_eP-- endPose
+
+    // now, we concatenate these transformations: // T_sP_eP = T_sP_ff * T_ff_eP
+    deltaPoseEigen = startPoseEigenInv * endPoseEigen;
+    tf::poseEigenToMsg(deltaPoseEigen, deltaPoseGeom);
+
+    // normalize orientation quaternion
+    geometry_msgs::Quaternion deltaQuatGeom = deltaPoseGeom.orientation;
+    tf2::Quaternion deltaQuatTf2;
+    tf2::fromMsg(deltaQuatGeom, deltaQuatTf2);
+    deltaQuatTf2.normalize();
+    deltaPoseGeom.orientation = tf2::toMsg(deltaQuatTf2);
+
+    return deltaPoseGeom;
+}
+
+
 geometry_msgs::Point interpolateBetweenPoints(const geometry_msgs::Point& p0,
                                          const geometry_msgs::Point& p1,
                                          const double scale){

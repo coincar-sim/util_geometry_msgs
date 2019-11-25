@@ -36,6 +36,30 @@ using namespace util_geometry_msgs::computations;
 
 static const double DOUBLE_TOLERANCE = 10.e-9;
 
+TEST(UtilGeometryMsgsComputations, calcDeltaPose) {
+    geometry_msgs::Pose p0, p1, deltaPose;
+
+    p0.position.x = 20.;
+    p0.position.y = 0.;
+    p0.position.z = 5.;
+    p0.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI/2.);
+
+    p1.position.x = 10.;
+    p1.position.y = 100.;
+    p1.position.z = 1000.;
+    p1.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI);
+
+    deltaPose = util_geometry_msgs::computations::calcDeltaPose(p0, p1);
+
+    EXPECT_NEAR(100., deltaPose.position.x, DOUBLE_TOLERANCE);
+    EXPECT_NEAR(10., deltaPose.position.y, DOUBLE_TOLERANCE);
+    EXPECT_NEAR(995., deltaPose.position.z, DOUBLE_TOLERANCE);
+
+    double deltaYaw = util_geometry_msgs::conversions::yawFromPose(deltaPose);
+    EXPECT_DOUBLE_EQ(M_PI/2, deltaYaw);
+
+}
+
 TEST(UtilGeometryMsgsComputations, interpolateBetweenPoses) {
     geometry_msgs::Pose p0, p1, interp;
 

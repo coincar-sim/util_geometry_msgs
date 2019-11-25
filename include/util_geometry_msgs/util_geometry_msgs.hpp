@@ -63,6 +63,13 @@ inline void fromMsg(const geometry_msgs::Pose& msg, Eigen::Isometry3d& out) {
         Eigen::Quaterniond(msg.orientation.w, msg.orientation.x, msg.orientation.y, msg.orientation.z));
 }
 
+inline void fromMsg(const geometry_msgs::Pose& msg, Eigen::Vector3d& out) {
+
+	out.x() = msg.position.x;
+	out.y() = msg.position.y;
+	out.z() = msg.position.z;
+}
+
 
 /** \brief Convert a Eigen Isometry3d transform type to a Pose message.
  * This function is a supplement to the "geometry_msgs::Pose toMsg(const Eigen::Affine3d& in)" conversion defined
@@ -433,6 +440,8 @@ void rereferenceTwistWithCovariance(const geometry_msgs::TwistWithCovariance& Tw
 } // namespace util_geometry_msgs::transformations
 
 namespace computations {
+
+geometry_msgs::Pose calcDeltaPose(const geometry_msgs::Pose& startPose, const geometry_msgs::Pose& endPose);
 
 geometry_msgs::Point interpolateBetweenPoints(const geometry_msgs::Point& p0,
                                               const geometry_msgs::Point& p1,
