@@ -62,7 +62,7 @@ TEST(UtilGeometryMsgsConversions, pose2Isometry) {
     pose.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI / 4.);
 
     Eigen::Isometry3d eigenPose;
-    fromMsg(pose, eigenPose);
+    util_geometry_msgs::conversions::fromMsg(pose, eigenPose);
     EXPECT_NEAR(1./sqrt(2.), eigenPose(0,0), DOUBLE_TOLERANCE);
     EXPECT_NEAR(1./sqrt(2.), eigenPose(1,0), DOUBLE_TOLERANCE);
     EXPECT_NEAR(-1./sqrt(2.), eigenPose(0,1), DOUBLE_TOLERANCE);
@@ -81,7 +81,7 @@ TEST(UtilGeometryMsgsConversions, isometry2Pose) {
     eigenPose.translate(Eigen::Vector3d(1.,2.,3.));
     eigenPose.rotate(Eigen::AngleAxisd(M_PI/4., Eigen::Vector3d::UnitZ()));
 
-    geometry_msgs::Pose pose = toMsg(eigenPose);
+    geometry_msgs::Pose pose = util_geometry_msgs::conversions::toMsg(eigenPose);
 
     EXPECT_DOUBLE_EQ(1., pose.position.x);
     EXPECT_DOUBLE_EQ(2., pose.position.y);
