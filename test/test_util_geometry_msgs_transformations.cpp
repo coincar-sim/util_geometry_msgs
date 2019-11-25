@@ -252,21 +252,4 @@ TEST_F(UtilGeometryMsgsTransformations, ninetyDegreeReferencingTestPose) {
 
     rereferencePoseWithCovariance(pOrig, baseFrame_, frame, pActual);
     EXPECT_POSE_WITH_COVARIANCE_NEAR(pExpected, pActual, DOUBLE_TOLERANCE);
-
-    // second -90 degree around z
-    pOrig.pose.position.x = 0;
-    pOrig.pose.position.y = -1;
-    pOrig.pose.position.z = 0;
-    pOrig.pose.orientation = util_geometry_msgs::conversions::quaternionFromYaw(-M_PI / 2.);
-    pOrig.covariance = covGroundTruthValues_;
-
-    pExpected.pose.position.x = -1;
-    pExpected.pose.position.y = 0;
-    pExpected.pose.position.z = 0;
-    pExpected.pose.orientation = util_geometry_msgs::conversions::quaternionFromYaw(-M_PI);
-    pExpected.pose.orientation.z = 1.;
-    pExpected.covariance = covGroundTruthValues_;
-
-    rereferencePoseWithCovariance(pOrig, baseFrame_, frame, pActual);
-    EXPECT_POSE_WITH_COVARIANCE_NEAR(pExpected, pActual, DOUBLE_TOLERANCE);
 }
