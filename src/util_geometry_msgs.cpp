@@ -32,11 +32,9 @@
 
 namespace util_geometry_msgs {
 
-namespace conversions{
+namespace conversions {} // namespace conversions
 
-} // namespace util_geometry_msgs::conversions
-
-namespace checks{
+namespace checks {
 
 bool covarianceMatrixValid(const boost::array<double, 36>& cov) {
     // convert to Eigen::Matrix
@@ -46,10 +44,7 @@ bool covarianceMatrixValid(const boost::array<double, 36>& cov) {
 }
 
 bool covarianceMatrixIsGroundTruth(const boost::array<double, 36>& cov) {
-    if (std::all_of(cov.begin(), cov.end(), [](double d) { return d == 0; })) {
-        return true;
-    }
-    return false;
+    return std::all_of(cov.begin(), cov.end(), [](double d) { return d == 0; });
 }
 
 bool topLeft3x3CovarianceMatrixValid(const boost::array<double, 36>& cov) {
@@ -67,16 +62,16 @@ bool bottomRight3x3CovarianceMatrixValid(const boost::array<double, 36>& cov) {
 }
 
 
-} // namespace util_geometry_msgs::checks
+} // namespace checks
 
-namespace transformations{
+namespace transformations {
 
 void transformFromPoses(const geometry_msgs::Pose& oldFrame,
                         const geometry_msgs::Pose& newFrame,
                         Eigen::Isometry3d& transform) {
     Eigen::Isometry3d oldFrameTransformEigen, newFrameTransformEigen;
-    //tf2::fromMsg(oldFrame, oldFrameTransformEigen);
-    //tf2::fromMsg(newFrame, newFrameTransformEigen);
+    // tf2::fromMsg(oldFrame, oldFrameTransformEigen);
+    // tf2::fromMsg(newFrame, newFrameTransformEigen);
     conversions::fromMsg(oldFrame, oldFrameTransformEigen);
     conversions::fromMsg(newFrame, newFrameTransformEigen);
     transform = oldFrameTransformEigen * newFrameTransformEigen.inverse();
@@ -93,7 +88,7 @@ void rereferencePose(const geometry_msgs::Pose& pose,
 
     // perform the actual transformation
     Eigen::Isometry3d poseEigen, transformedPoseEigen;
-    //tf2::fromMsg(pose, poseEigen);
+    // tf2::fromMsg(pose, poseEigen);
     conversions::fromMsg(pose, poseEigen);
     transformedPoseEigen = transform * poseEigen;
     transformedPose = tf2::toMsg(transformedPoseEigen);
@@ -110,14 +105,14 @@ void rereferenceTwist(const geometry_msgs::Twist& twist,
 
     // Transform the Twist
     Eigen::Vector3d linearTwistEigen, angularTwistEigen, linearTwistEigenTransformed, angularTwistEigenTransformed;
-    //tf2::fromMsg(twist.linear, linearTwistEigen);
-    //tf2::fromMsg(twist.angular, angularTwistEigen);
+    // tf2::fromMsg(twist.linear, linearTwistEigen);
+    // tf2::fromMsg(twist.angular, angularTwistEigen);
     conversions::fromMsg(twist.linear, linearTwistEigen);
     conversions::fromMsg(twist.angular, angularTwistEigen);
     linearTwistEigenTransformed = transform.linear() * linearTwistEigen;
     angularTwistEigenTransformed = transform.linear() * angularTwistEigen;
-    //tf2::fromMsg(linearTwistEigen, transformedTwist.linear);
-    //tf2::fromMsg(angularTwistEigen, transformedTwist.angular);
+    // tf2::fromMsg(linearTwistEigen, transformedTwist.linear);
+    // tf2::fromMsg(angularTwistEigen, transformedTwist.angular);
     transformedTwist.linear = conversions::toMsg<geometry_msgs::Vector3>(linearTwistEigen);
     transformedTwist.angular = conversions::toMsg<geometry_msgs::Vector3>(angularTwistEigen);
 }
@@ -172,7 +167,7 @@ void rereferenceTwistWithCovariance(const geometry_msgs::TwistWithCovariance& tw
         twistWithCovariance.covariance, oldFrame, newFrame, transformedTwistWithCovariance.covariance);
 }
 
-} // namespace util_geometry_msgs::transformations
+} // namespace transformations
 
 namespace {
 void throwIfScaleInvalid(const double scale) {
@@ -181,9 +176,9 @@ void throwIfScaleInvalid(const double scale) {
     }
 }
 
-}
+} // namespace
 
-namespace computations{
+namespace computations {
 
 geometry_msgs::Pose calcDeltaPose(const geometry_msgs::Pose& startPose, const geometry_msgs::Pose& endPose) {
     // we have: fixed frame <--T_ff_sP-- startPose  AND  fixed frame <--T_ff_eP-- endPose
@@ -214,8 +209,8 @@ geometry_msgs::Pose calcDeltaPose(const geometry_msgs::Pose& startPose, const ge
 
 
 geometry_msgs::Point interpolateBetweenPoints(const geometry_msgs::Point& p0,
-                                         const geometry_msgs::Point& p1,
-                                         const double scale){
+                                              const geometry_msgs::Point& p1,
+                                              const double scale) {
     throwIfScaleInvalid(scale);
     geometry_msgs::Point interpolPosition;
 
@@ -227,8 +222,8 @@ geometry_msgs::Point interpolateBetweenPoints(const geometry_msgs::Point& p0,
 }
 
 geometry_msgs::Quaternion interpolateBetweenQuaternions(const geometry_msgs::Quaternion& o0,
-                                                 const geometry_msgs::Quaternion& o1,
-                                                 const double scale){
+                                                        const geometry_msgs::Quaternion& o1,
+                                                        const double scale) {
     throwIfScaleInvalid(scale);
     geometry_msgs::Quaternion interpolOrientation;
 
@@ -242,7 +237,9 @@ geometry_msgs::Quaternion interpolateBetweenQuaternions(const geometry_msgs::Qua
 }
 
 
-geometry_msgs::Pose interpolateBetweenPoses(const geometry_msgs::Pose& p0, const geometry_msgs::Pose& p1, const double scale) {
+geometry_msgs::Pose interpolateBetweenPoses(const geometry_msgs::Pose& p0,
+                                            const geometry_msgs::Pose& p1,
+                                            const double scale) {
     throwIfScaleInvalid(scale);
     geometry_msgs::Pose interpolPose;
 
@@ -252,7 +249,7 @@ geometry_msgs::Pose interpolateBetweenPoses(const geometry_msgs::Pose& p0, const
     return interpolPose;
 }
 
-geometry_msgs::Pose addDeltaPose(const geometry_msgs::Pose& startPose, const geometry_msgs::Pose& deltaPose){
+geometry_msgs::Pose addDeltaPose(const geometry_msgs::Pose& startPose, const geometry_msgs::Pose& deltaPose) {
     // we have: fixed frame <--T_ff_sP-- startPose <--T_sP_dP-- deltaPose
     // we want: fixed frame <--T_ff_dP-- deltaPose
 
@@ -281,7 +278,7 @@ geometry_msgs::Pose addDeltaPose(const geometry_msgs::Pose& startPose, const geo
     return newPoseGeom;
 }
 
-geometry_msgs::Pose subtractDeltaPose(const geometry_msgs::Pose& startPose, const geometry_msgs::Pose& deltaPose){
+geometry_msgs::Pose subtractDeltaPose(const geometry_msgs::Pose& startPose, const geometry_msgs::Pose& deltaPose) {
     // we have: fixed frame <--T_ff_sP-- startPose  AND  deltaPose <--T_dP_sP-- startPose
     // we want: fixed frame <--T_ff_dP-- deltaPose
     Eigen::Isometry3d startPoseEigen, deltaPoseEigen, deltaPoseEigenInv, newPoseEigen;
@@ -309,7 +306,7 @@ geometry_msgs::Pose subtractDeltaPose(const geometry_msgs::Pose& startPose, cons
 }
 
 
-} // namespace util_geometry_msgs::computations
+} // namespace computations
 
 
 } // namespace util_geometry_msgs

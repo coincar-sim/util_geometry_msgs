@@ -34,7 +34,7 @@
 
 using namespace util_geometry_msgs::computations;
 
-static const double DOUBLE_TOLERANCE = 10.e-9;
+static const double DoubleTolerance = 10.e-9;
 
 TEST(UtilGeometryMsgsComputations, calcDeltaPose) {
     geometry_msgs::Pose p0, p1, deltaPose;
@@ -42,7 +42,7 @@ TEST(UtilGeometryMsgsComputations, calcDeltaPose) {
     p0.position.x = 20.;
     p0.position.y = 0.;
     p0.position.z = 5.;
-    p0.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI/2.);
+    p0.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI / 2.);
 
     p1.position.x = 10.;
     p1.position.y = 100.;
@@ -51,13 +51,12 @@ TEST(UtilGeometryMsgsComputations, calcDeltaPose) {
 
     deltaPose = util_geometry_msgs::computations::calcDeltaPose(p0, p1);
 
-    EXPECT_NEAR(100., deltaPose.position.x, DOUBLE_TOLERANCE);
-    EXPECT_NEAR(10., deltaPose.position.y, DOUBLE_TOLERANCE);
-    EXPECT_NEAR(995., deltaPose.position.z, DOUBLE_TOLERANCE);
+    EXPECT_NEAR(100., deltaPose.position.x, DoubleTolerance);
+    EXPECT_NEAR(10., deltaPose.position.y, DoubleTolerance);
+    EXPECT_NEAR(995., deltaPose.position.z, DoubleTolerance);
 
     double deltaYaw = util_geometry_msgs::conversions::yawFromPose(deltaPose);
-    EXPECT_DOUBLE_EQ(M_PI/2, deltaYaw);
-
+    EXPECT_DOUBLE_EQ(M_PI / 2, deltaYaw);
 }
 
 TEST(UtilGeometryMsgsComputations, interpolateBetweenPoses) {
@@ -66,7 +65,7 @@ TEST(UtilGeometryMsgsComputations, interpolateBetweenPoses) {
     p0.position.x = 1.;
     p0.position.y = 1.;
     p0.position.z = 1.;
-    p0.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI/2.);
+    p0.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI / 2.);
 
     p1.position.x = 10.;
     p1.position.y = 100.;
@@ -90,8 +89,8 @@ TEST(UtilGeometryMsgsComputations, interpolateBetweenPoses) {
     EXPECT_DOUBLE_EQ(10.9, interp.position.y);
     EXPECT_DOUBLE_EQ(100.9, interp.position.z);
 
-    double yaw_interp = util_geometry_msgs::conversions::yawFromPose(interp);
-    EXPECT_DOUBLE_EQ(1.1*(M_PI/2.), yaw_interp);
+    double yawInterp = util_geometry_msgs::conversions::yawFromPose(interp);
+    EXPECT_DOUBLE_EQ(1.1 * (M_PI / 2.), yawInterp);
 }
 
 TEST(UtilGeometryMsgsComputations, addDeltaPose) {
@@ -100,21 +99,21 @@ TEST(UtilGeometryMsgsComputations, addDeltaPose) {
     p0.position.x = 1.;
     p0.position.y = 0.;
     p0.position.z = 0.;
-    p0.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI/2.);
+    p0.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI / 2.);
 
     deltaPose.position.x = 1.;
     deltaPose.position.y = 10.;
     deltaPose.position.z = 1000.;
-    deltaPose.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI/4.);
+    deltaPose.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI / 4.);
 
     p1 = addDeltaPose(p0, deltaPose);
 
     EXPECT_DOUBLE_EQ(-9., p1.position.x);
-    EXPECT_NEAR(1., p1.position.y, DOUBLE_TOLERANCE);
+    EXPECT_NEAR(1., p1.position.y, DoubleTolerance);
     EXPECT_DOUBLE_EQ(1000., p1.position.z);
 
     double p1yaw = util_geometry_msgs::conversions::yawFromPose(p1);
-    EXPECT_DOUBLE_EQ(0.75*M_PI, p1yaw);
+    EXPECT_DOUBLE_EQ(0.75 * M_PI, p1yaw);
 }
 
 TEST(UtilGeometryMsgsComputations, subtractDeltaPose) {
@@ -123,20 +122,19 @@ TEST(UtilGeometryMsgsComputations, subtractDeltaPose) {
     p1.position.x = -9.;
     p1.position.y = 1.;
     p1.position.z = 1000.;
-    p1.orientation = util_geometry_msgs::conversions::quaternionFromYaw(0.75*M_PI);
+    p1.orientation = util_geometry_msgs::conversions::quaternionFromYaw(0.75 * M_PI);
 
     deltaPose.position.x = 1.;
     deltaPose.position.y = 10.;
     deltaPose.position.z = 1000.;
-    deltaPose.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI/4.);
+    deltaPose.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI / 4.);
 
     p0 = subtractDeltaPose(p1, deltaPose);
 
     EXPECT_DOUBLE_EQ(1., p0.position.x);
-    EXPECT_NEAR(0., p0.position.y, DOUBLE_TOLERANCE);
+    EXPECT_NEAR(0., p0.position.y, DoubleTolerance);
     EXPECT_DOUBLE_EQ(0., p0.position.z);
 
     double p0yaw = util_geometry_msgs::conversions::yawFromPose(p0);
-    EXPECT_DOUBLE_EQ(0.5*M_PI, p0yaw);
-
+    EXPECT_DOUBLE_EQ(0.5 * M_PI, p0yaw);
 }
