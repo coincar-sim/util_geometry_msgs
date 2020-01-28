@@ -34,21 +34,21 @@
 
 using namespace util_geometry_msgs::conversions;
 
-static const double DOUBLE_TOLERANCE = 10.e-9;
+static const double DoubleTolerance = 10.e-9;
 
 TEST(UtilGeometryMsgsConversions, quaternionFromYaw) {
     geometry_msgs::Quaternion quat;
     quat = util_geometry_msgs::conversions::quaternionFromYaw(M_PI / 2.);
-    EXPECT_NEAR(0., quat.x, DOUBLE_TOLERANCE);
-    EXPECT_NEAR(0., quat.y, DOUBLE_TOLERANCE);
-    EXPECT_NEAR(1. / sqrt(2.), quat.z, DOUBLE_TOLERANCE);
-    EXPECT_NEAR(1. / sqrt(2.), quat.w, DOUBLE_TOLERANCE);
+    EXPECT_NEAR(0., quat.x, DoubleTolerance);
+    EXPECT_NEAR(0., quat.y, DoubleTolerance);
+    EXPECT_NEAR(1. / sqrt(2.), quat.z, DoubleTolerance);
+    EXPECT_NEAR(1. / sqrt(2.), quat.w, DoubleTolerance);
 
     quat = util_geometry_msgs::conversions::quaternionFromYaw(-M_PI / 4.);
-    EXPECT_NEAR(0., quat.x, DOUBLE_TOLERANCE);
-    EXPECT_NEAR(0., quat.y, DOUBLE_TOLERANCE);
-    EXPECT_NEAR(-0.3826834323, quat.z, DOUBLE_TOLERANCE);
-    EXPECT_NEAR(0.9238795325, quat.w, DOUBLE_TOLERANCE);
+    EXPECT_NEAR(0., quat.x, DoubleTolerance);
+    EXPECT_NEAR(0., quat.y, DoubleTolerance);
+    EXPECT_NEAR(-0.3826834323, quat.z, DoubleTolerance);
+    EXPECT_NEAR(0.9238795325, quat.w, DoubleTolerance);
 }
 
 TEST(UtilGeometryMsgsConversions, pose2Isometry) {
@@ -61,14 +61,14 @@ TEST(UtilGeometryMsgsConversions, pose2Isometry) {
 
     Eigen::Isometry3d eigenPose;
     util_geometry_msgs::conversions::fromMsg(pose, eigenPose);
-    EXPECT_NEAR(1. / sqrt(2.), eigenPose(0, 0), DOUBLE_TOLERANCE);
-    EXPECT_NEAR(1. / sqrt(2.), eigenPose(1, 0), DOUBLE_TOLERANCE);
-    EXPECT_NEAR(-1. / sqrt(2.), eigenPose(0, 1), DOUBLE_TOLERANCE);
-    EXPECT_NEAR(1. / sqrt(2.), eigenPose(1, 1), DOUBLE_TOLERANCE);
+    EXPECT_NEAR(1. / sqrt(2.), eigenPose(0, 0), DoubleTolerance);
+    EXPECT_NEAR(1. / sqrt(2.), eigenPose(1, 0), DoubleTolerance);
+    EXPECT_NEAR(-1. / sqrt(2.), eigenPose(0, 1), DoubleTolerance);
+    EXPECT_NEAR(1. / sqrt(2.), eigenPose(1, 1), DoubleTolerance);
 
-    EXPECT_NEAR(1, eigenPose(0, 3), DOUBLE_TOLERANCE);
-    EXPECT_NEAR(10, eigenPose(1, 3), DOUBLE_TOLERANCE);
-    EXPECT_NEAR(100, eigenPose(2, 3), DOUBLE_TOLERANCE);
+    EXPECT_NEAR(1, eigenPose(0, 3), DoubleTolerance);
+    EXPECT_NEAR(10, eigenPose(1, 3), DoubleTolerance);
+    EXPECT_NEAR(100, eigenPose(2, 3), DoubleTolerance);
 }
 
 TEST(UtilGeometryMsgsConversions, isometry2Pose) {
@@ -83,7 +83,7 @@ TEST(UtilGeometryMsgsConversions, isometry2Pose) {
     EXPECT_DOUBLE_EQ(1., pose.position.x);
     EXPECT_DOUBLE_EQ(2., pose.position.y);
     EXPECT_DOUBLE_EQ(3., pose.position.z);
-    EXPECT_NEAR(M_PI / 4., yawFromQuaternion(pose.orientation), DOUBLE_TOLERANCE);
+    EXPECT_NEAR(M_PI / 4., yawFromQuaternion(pose.orientation), DoubleTolerance);
 }
 
 TEST(UtilGeometryMsgsConversions, quat2EigenQuat) {
@@ -92,10 +92,10 @@ TEST(UtilGeometryMsgsConversions, quat2EigenQuat) {
 
     Eigen::Quaterniond eigenQuat;
     fromMsg(quat, eigenQuat);
-    EXPECT_NEAR(quat.x, eigenQuat.x(), DOUBLE_TOLERANCE);
-    EXPECT_NEAR(quat.y, eigenQuat.y(), DOUBLE_TOLERANCE);
-    EXPECT_NEAR(quat.z, eigenQuat.z(), DOUBLE_TOLERANCE);
-    EXPECT_NEAR(quat.w, eigenQuat.w(), DOUBLE_TOLERANCE);
+    EXPECT_NEAR(quat.x, eigenQuat.x(), DoubleTolerance);
+    EXPECT_NEAR(quat.y, eigenQuat.y(), DoubleTolerance);
+    EXPECT_NEAR(quat.z, eigenQuat.z(), DoubleTolerance);
+    EXPECT_NEAR(quat.w, eigenQuat.w(), DoubleTolerance);
 }
 
 TEST(UtilGeometryMsgsConversions, yawFromQuaternion) {
@@ -103,7 +103,7 @@ TEST(UtilGeometryMsgsConversions, yawFromQuaternion) {
     quat = util_geometry_msgs::conversions::quaternionFromYaw(M_PI / 4.);
 
     double yaw = yawFromQuaternion(quat);
-    EXPECT_NEAR(M_PI / 4., yaw, DOUBLE_TOLERANCE);
+    EXPECT_NEAR(M_PI / 4., yaw, DoubleTolerance);
 }
 
 TEST(UtilGeometryMsgsConversions, boostArrayToEigenMatrix) {
@@ -123,7 +123,7 @@ TEST(UtilGeometryMsgsConversions, eigenMatrixToBoostArray) {
     Eigen::Matrix2d matrix;
     matrix << 1, 2, 3, 4;
 
-    boost::array<double, 4> array;
+    boost::array<double, 4> array{};
 
     eigenMatrixToBoostArray(matrix, array, true);
     EXPECT_DOUBLE_EQ(1., array.at(0));

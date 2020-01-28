@@ -46,7 +46,9 @@
 
 namespace util_geometry_msgs {
 
-typedef boost::array<double, 36> covariance_t;
+// Name cannot be changed due to backwards compatibility.
+// NOLINTNEXTLINE(readability-identifier-naming)
+using covariance_t = boost::array<double, 36>;
 
 namespace conversions {
 
@@ -83,7 +85,7 @@ inline geometry_msgs::Pose toMsg(const Eigen::Isometry3d& in) {
     msg.position.x = in.translation().x();
     msg.position.y = in.translation().y();
     msg.position.z = in.translation().z();
-    Eigen::Quaterniond orientation = (Eigen::Quaterniond)in.linear();
+    Eigen::Quaterniond orientation = static_cast<Eigen::Quaterniond>(in.linear());
     msg.orientation.x = orientation.x();
     msg.orientation.y = orientation.y();
     msg.orientation.z = orientation.z();
@@ -133,27 +135,27 @@ Type3D toMsg(const Eigen::Vector3d& in) {
  * @param[out] Matrix stored as Eigen::matrix
  * @param[in, optional] input boost:array is using row-major-representation(true) or column-major-representation(false)
  * @return void */
-template <typename _Scalar, int size, int _majorOption>
-inline void boostArrayToEigenMatrix(const boost::array<_Scalar, size * size>& boostArray,
-                                    Eigen::Matrix<_Scalar, size, size, _majorOption>& eigenMatrix,
+template <typename Scalar, int Size, int MajorOption>
+inline void boostArrayToEigenMatrix(const boost::array<Scalar, Size * Size>& boostArray,
+                                    Eigen::Matrix<Scalar, Size, Size, MajorOption>& eigenMatrix,
                                     bool boostArrayIsRowMajor = true) {
-    if ((boostArrayIsRowMajor && _majorOption == Eigen::RowMajor) ||
-        (!boostArrayIsRowMajor && _majorOption == Eigen::ColMajor)) {
+    if ((boostArrayIsRowMajor && MajorOption == Eigen::RowMajor) ||
+        (!boostArrayIsRowMajor && MajorOption == Eigen::ColMajor)) {
         // input as well as output using row-major-representation or column-major-representation
-        for (int index = 0; index < size * size; index++) {
+        for (int index = 0; index < Size * Size; index++) {
             eigenMatrix(index) = boostArray[index];
         }
-    } else if (!boostArrayIsRowMajor && _majorOption == Eigen::RowMajor) {
+    } else if (!boostArrayIsRowMajor && MajorOption == Eigen::RowMajor) {
         // input is using Column Major representation output is using row-major-representation
-        Eigen::Matrix<_Scalar, size, size, Eigen::ColMajor> tempMatrix;
-        for (int index = 0; index < size * size; index++) {
+        Eigen::Matrix<Scalar, Size, Size, Eigen::ColMajor> tempMatrix;
+        for (int index = 0; index < Size * Size; index++) {
             tempMatrix(index) = boostArray[index];
         }
         eigenMatrix = tempMatrix;
-    } else if (boostArrayIsRowMajor && _majorOption == Eigen::ColMajor) {
+    } else if (boostArrayIsRowMajor && MajorOption == Eigen::ColMajor) {
         // input is using Row-Major representation output is using column-major-representation
-        Eigen::Matrix<_Scalar, size, size, Eigen::RowMajor> tempMatrix;
-        for (int index = 0; index < size * size; index++) {
+        Eigen::Matrix<Scalar, Size, Size, Eigen::RowMajor> tempMatrix;
+        for (int index = 0; index < Size * Size; index++) {
             tempMatrix(index) = boostArray[index];
         }
         eigenMatrix = tempMatrix;
@@ -165,26 +167,26 @@ inline void boostArrayToEigenMatrix(const boost::array<_Scalar, size * size>& bo
  * @param[out] Matrix stored as boost::array
  * @param[in, optional] output boost:array is using row-major-representation(true) or column-major-representation(false)
  * @return void */
-template <typename _Scalar, int size, int _majorOption>
-inline void eigenMatrixToBoostArray(const Eigen::Matrix<_Scalar, size, size, _majorOption>& eigenMatrix,
-                                    boost::array<_Scalar, size * size>& boostArray,
+template <typename Scalar, int Size, int MajorOption>
+inline void eigenMatrixToBoostArray(const Eigen::Matrix<Scalar, Size, Size, MajorOption>& eigenMatrix,
+                                    boost::array<Scalar, Size * Size>& boostArray,
                                     bool boostArrayIsRowMajor = true) {
-    if ((boostArrayIsRowMajor && _majorOption == Eigen::RowMajor) ||
-        (!boostArrayIsRowMajor && _majorOption == Eigen::ColMajor)) {
+    if ((boostArrayIsRowMajor && MajorOption == Eigen::RowMajor) ||
+        (!boostArrayIsRowMajor && MajorOption == Eigen::ColMajor)) {
         // input as well as output using row-major-representation or column-major-representation
-        for (int index = 0; index < size * size; index++) {
+        for (int index = 0; index < Size * Size; index++) {
             boostArray[index] = eigenMatrix(index);
         }
-    } else if (!boostArrayIsRowMajor && _majorOption == Eigen::RowMajor) {
+    } else if (!boostArrayIsRowMajor && MajorOption == Eigen::RowMajor) {
         // output is using Column Major representation, input is using row-major-representation
-        Eigen::Matrix<_Scalar, size, size, Eigen::ColMajor> tempMatrix = eigenMatrix;
-        for (int index = 0; index < size * size; index++) {
+        Eigen::Matrix<Scalar, Size, Size, Eigen::ColMajor> tempMatrix = eigenMatrix;
+        for (int index = 0; index < Size * Size; index++) {
             boostArray[index] = tempMatrix(index);
         }
-    } else if (boostArrayIsRowMajor && _majorOption == Eigen::ColMajor) {
+    } else if (boostArrayIsRowMajor && MajorOption == Eigen::ColMajor) {
         // output is using Row-Major representation, input is using column-major-representation
-        Eigen::Matrix<_Scalar, size, size, Eigen::RowMajor> tempMatrix = eigenMatrix;
-        for (int index = 0; index < size * size; index++) {
+        Eigen::Matrix<Scalar, Size, Size, Eigen::RowMajor> tempMatrix = eigenMatrix;
+        for (int index = 0; index < Size * Size; index++) {
             boostArray[index] = tempMatrix(index);
         }
     }
@@ -343,6 +345,8 @@ bool bottomRight3x3CovarianceMatrixValid(const boost::array<double, 36>& cov);
 
 // Covariance Matrix to mark all values as undefined or unreliable.
 // clang-format off
+// Cannot change name due to backwards compatibility.
+// NOLINTNEXTLINE(readability-identifier-naming)
 static constexpr boost::array<double, 36> covarianceUnkownValues = {{
     -1, 0, 0, 0, 0, 0,
     0, -1, 0, 0, 0, 0,
@@ -353,6 +357,8 @@ static constexpr boost::array<double, 36> covarianceUnkownValues = {{
 // clang-format on
 
 // Covariance Matrix to mark all values as ground truth values.
+// Cannot change name due to backwards compatibility.
+// NOLINTNEXTLINE(readability-identifier-naming)
 static constexpr boost::array<double, 36> covarianceGroundTruthValues = {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
@@ -431,7 +437,7 @@ void rereferencePoseWithCovariance(const geometry_msgs::PoseWithCovariance& pose
  * @param[in] newFrame defined by an origin (newFrame.position) and orientation (newFrame.orientation)
  * @param[out] transformedTwistWithCovariance: Twist and covariancerereferenced to newFrame
  * @return void */
-void rereferenceTwistWithCovariance(const geometry_msgs::TwistWithCovariance& TwistWithCovariance,
+void rereferenceTwistWithCovariance(const geometry_msgs::TwistWithCovariance& twistWithCovariance,
                                     const geometry_msgs::Pose& oldFrame,
                                     const geometry_msgs::Pose& newFrame,
                                     geometry_msgs::TwistWithCovariance& transformedTwistWithCovariance);

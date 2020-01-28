@@ -44,10 +44,7 @@ bool covarianceMatrixValid(const boost::array<double, 36>& cov) {
 }
 
 bool covarianceMatrixIsGroundTruth(const boost::array<double, 36>& cov) {
-    if (std::all_of(cov.begin(), cov.end(), [](double d) { return d == 0; })) {
-        return true;
-    }
-    return false;
+    return std::all_of(cov.begin(), cov.end(), [](double d) { return d == 0; });
 }
 
 bool topLeft3x3CovarianceMatrixValid(const boost::array<double, 36>& cov) {

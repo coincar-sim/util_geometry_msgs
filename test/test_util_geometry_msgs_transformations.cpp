@@ -76,160 +76,165 @@
 #include "util_geometry_msgs.hpp"
 
 using namespace util_geometry_msgs::transformations;
-using covariance_type = geometry_msgs::PoseWithCovariance::_covariance_type;
+using CovarianceType = geometry_msgs::PoseWithCovariance::_covariance_type;
 
-static const double DOUBLE_TOLERANCE = 10.e-9;
+static const double DoubleTolerance = 10.e-9;
 
 class UtilGeometryMsgsTransformations : public ::testing::Test {
 protected:
-    virtual void SetUp() {
+    // NOLINTNEXTLINE(readability-function-size)
+    void SetUp() override {
         std::srand(42); // used fixed seed
 
-        covGroundTruthValues_ = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                                 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                                 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        covGroundTruthValues = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 
-        covArbitraryDiagValuesValid_ = {1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0,
-                                        0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 6};
+        covArbitraryDiagValuesValid = {1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0,
+                                       0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 6};
 
-        covArbitraryValuesValid_ = {11, 12, 13, 14, 15, 16, 12, 22, 23, 24, 25, 26, 13, 23, 33, 34, 35, 36,
-                                    14, 24, 34, 44, 45, 46, 15, 25, 35, 45, 55, 56, 16, 26, 36, 46, 56, 66};
+        covArbitraryValuesValid = {11, 12, 13, 14, 15, 16, 12, 22, 23, 24, 25, 26, 13, 23, 33, 34, 35, 36,
+                                   14, 24, 34, 44, 45, 46, 15, 25, 35, 45, 55, 56, 16, 26, 36, 46, 56, 66};
 
-        p00_.pose.position.x = 0.0;
-        p00_.pose.position.y = 0.0;
-        p00_.pose.position.z = 0.0;
-        p00_.pose.orientation = util_geometry_msgs::conversions::quaternionFromYaw(0.);
-        p00_.covariance = covArbitraryDiagValuesValid_;
-        poses_.push_back(p00_);
+        p00.pose.position.x = 0.0;
+        p00.pose.position.y = 0.0;
+        p00.pose.position.z = 0.0;
+        p00.pose.orientation = util_geometry_msgs::conversions::quaternionFromYaw(0.);
+        p00.covariance = covArbitraryDiagValuesValid;
+        poses.push_back(p00);
 
-        p130_.pose.position.x = 1.0;
-        p130_.pose.position.y = 1.0;
-        p130_.pose.position.z = 1.0;
-        p130_.pose.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI / 3.);
-        p130_.covariance = covArbitraryDiagValuesValid_;
-        poses_.push_back(p130_);
+        p130.pose.position.x = 1.0;
+        p130.pose.position.y = 1.0;
+        p130.pose.position.z = 1.0;
+        p130.pose.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI / 3.);
+        p130.covariance = covArbitraryDiagValuesValid;
+        poses.push_back(p130);
 
-        p10_.pose.position.x = 1.0;
-        p10_.pose.position.y = 1.0;
-        p10_.pose.position.z = 1.0;
-        p10_.pose.orientation = util_geometry_msgs::conversions::quaternionFromYaw(0.);
-        p10_.covariance = covArbitraryDiagValuesValid_;
-        poses_.push_back(p10_);
+        p10.pose.position.x = 1.0;
+        p10.pose.position.y = 1.0;
+        p10.pose.position.z = 1.0;
+        p10.pose.orientation = util_geometry_msgs::conversions::quaternionFromYaw(0.);
+        p10.covariance = covArbitraryDiagValuesValid;
+        poses.push_back(p10);
 
-        t00_.twist.linear.x = 0.0;
-        t00_.twist.linear.y = 0.0;
-        t00_.twist.linear.z = 0.0;
-        t00_.twist.angular.x = 0.0;
-        t00_.twist.angular.y = 0.0;
-        t00_.twist.angular.z = 0.0;
-        t00_.covariance = covArbitraryDiagValuesValid_;
-        twists_.push_back(t00_);
+        t00.twist.linear.x = 0.0;
+        t00.twist.linear.y = 0.0;
+        t00.twist.linear.z = 0.0;
+        t00.twist.angular.x = 0.0;
+        t00.twist.angular.y = 0.0;
+        t00.twist.angular.z = 0.0;
+        t00.covariance = covArbitraryDiagValuesValid;
+        twists.push_back(t00);
 
-        t10_.twist.linear.x = 1.0;
-        t10_.twist.linear.y = 1.0;
-        t10_.twist.linear.z = 1.0;
-        t10_.twist.angular.x = 0.0;
-        t10_.twist.angular.y = 0.0;
-        t10_.twist.angular.z = 0.0;
-        t10_.covariance = covArbitraryDiagValuesValid_;
-        twists_.push_back(t10_);
+        t10.twist.linear.x = 1.0;
+        t10.twist.linear.y = 1.0;
+        t10.twist.linear.z = 1.0;
+        t10.twist.angular.x = 0.0;
+        t10.twist.angular.y = 0.0;
+        t10.twist.angular.z = 0.0;
+        t10.covariance = covArbitraryDiagValuesValid;
+        twists.push_back(t10);
 
-        t123_.twist.linear.x = 1.0;
-        t123_.twist.linear.y = 2.0;
-        t123_.twist.linear.z = 3.0;
-        t123_.twist.angular.x = 1.0;
-        t123_.twist.angular.y = 2.0;
-        t123_.twist.angular.z = 3.0;
-        t123_.covariance = covArbitraryDiagValuesValid_;
-        twists_.push_back(t123_);
+        t123.twist.linear.x = 1.0;
+        t123.twist.linear.y = 2.0;
+        t123.twist.linear.z = 3.0;
+        t123.twist.angular.x = 1.0;
+        t123.twist.angular.y = 2.0;
+        t123.twist.angular.z = 3.0;
+        t123.covariance = covArbitraryDiagValuesValid;
+        twists.push_back(t123);
 
-        a00_.accel.linear.x = 0.0;
-        a00_.accel.linear.y = 0.0;
-        a00_.accel.linear.z = 0.0;
-        a00_.accel.angular.x = 0.0;
-        a00_.accel.angular.y = 0.0;
-        a00_.accel.angular.z = 0.0;
-        a00_.covariance = covArbitraryDiagValuesValid_;
-        accels_.push_back(a00_);
+        a00.accel.linear.x = 0.0;
+        a00.accel.linear.y = 0.0;
+        a00.accel.linear.z = 0.0;
+        a00.accel.angular.x = 0.0;
+        a00.accel.angular.y = 0.0;
+        a00.accel.angular.z = 0.0;
+        a00.covariance = covArbitraryDiagValuesValid;
+        accels.push_back(a00);
 
-        a10_.accel.linear.x = 1.0;
-        a10_.accel.linear.y = 1.0;
-        a10_.accel.linear.z = 1.0;
-        a10_.accel.angular.x = 0.0;
-        a10_.accel.angular.y = 0.0;
-        a10_.accel.angular.z = 0.0;
-        a10_.covariance = covArbitraryDiagValuesValid_;
-        accels_.push_back(a10_);
+        a10.accel.linear.x = 1.0;
+        a10.accel.linear.y = 1.0;
+        a10.accel.linear.z = 1.0;
+        a10.accel.angular.x = 0.0;
+        a10.accel.angular.y = 0.0;
+        a10.accel.angular.z = 0.0;
+        a10.covariance = covArbitraryDiagValuesValid;
+        accels.push_back(a10);
 
-        a123_.accel.linear.x = 1.0;
-        a123_.accel.linear.y = 2.0;
-        a123_.accel.linear.z = 3.0;
-        a123_.accel.angular.x = 1.0;
-        a123_.accel.angular.y = 2.0;
-        a123_.accel.angular.z = 3.0;
-        a123_.covariance = covArbitraryDiagValuesValid_;
-        accels_.push_back(a123_);
+        a123.accel.linear.x = 1.0;
+        a123.accel.linear.y = 2.0;
+        a123.accel.linear.z = 3.0;
+        a123.accel.angular.x = 1.0;
+        a123.accel.angular.y = 2.0;
+        a123.accel.angular.z = 3.0;
+        a123.covariance = covArbitraryDiagValuesValid;
+        accels.push_back(a123);
 
         // define base_frame
-        baseFrame_.position.x = 0.0;
-        baseFrame_.position.y = 0.0;
-        baseFrame_.position.z = 0.0;
-        baseFrame_.orientation = util_geometry_msgs::conversions::quaternionFromYaw(0.);
+        baseFrame.position.x = 0.0;
+        baseFrame.position.y = 0.0;
+        baseFrame.position.z = 0.0;
+        baseFrame.orientation = util_geometry_msgs::conversions::quaternionFromYaw(0.);
     }
 
-    covariance_type covGroundTruthValues_;
-    covariance_type covArbitraryDiagValuesValid_;
-    covariance_type covArbitraryValuesValid_;
+    CovarianceType covGroundTruthValues{};
+    CovarianceType covArbitraryDiagValuesValid{};
+    CovarianceType covArbitraryValuesValid{};
 
-    geometry_msgs::PoseWithCovariance p00_;
-    geometry_msgs::PoseWithCovariance p10_;
-    geometry_msgs::PoseWithCovariance p130_;
-    geometry_msgs::TwistWithCovariance t00_;
-    geometry_msgs::TwistWithCovariance t10_;
-    geometry_msgs::TwistWithCovariance t123_;
-    geometry_msgs::AccelWithCovariance a00_;
-    geometry_msgs::AccelWithCovariance a10_;
-    geometry_msgs::AccelWithCovariance a123_;
+    geometry_msgs::PoseWithCovariance p00{};
+    geometry_msgs::PoseWithCovariance p10{};
+    geometry_msgs::PoseWithCovariance p130{};
+    geometry_msgs::TwistWithCovariance t00{};
+    geometry_msgs::TwistWithCovariance t10{};
+    geometry_msgs::TwistWithCovariance t123{};
 
-    std::vector<geometry_msgs::PoseWithCovariance> poses_;
-    std::vector<geometry_msgs::TwistWithCovariance> twists_;
-    std::vector<geometry_msgs::AccelWithCovariance> accels_;
+    geometry_msgs::AccelWithCovariance a00{};
+    geometry_msgs::AccelWithCovariance a10{};
+    geometry_msgs::AccelWithCovariance a123{};
 
-    geometry_msgs::Pose baseFrame_;
+    std::vector<geometry_msgs::PoseWithCovariance> poses{};
+    std::vector<geometry_msgs::TwistWithCovariance> twists{};
+    std::vector<geometry_msgs::AccelWithCovariance> accels{};
+
+    geometry_msgs::Pose baseFrame{};
 };
 
+// NOLINTNEXTLINE(readability-function-size)
 TEST_F(UtilGeometryMsgsTransformations, SameFrameReferencingTestPose) {
-    for (geometry_msgs::PoseWithCovariance& frame : poses_) {
-        for (geometry_msgs::PoseWithCovariance& p : poses_) {
+    for (geometry_msgs::PoseWithCovariance& frame : poses) {
+        for (geometry_msgs::PoseWithCovariance& p : poses) {
             geometry_msgs::PoseWithCovariance& origPose = p;
             geometry_msgs::PoseWithCovariance rereferencedPose;
             rereferencePoseWithCovariance(origPose, frame.pose, frame.pose, rereferencedPose);
-            EXPECT_POSE_WITH_COVARIANCE_NEAR(origPose, rereferencedPose, DOUBLE_TOLERANCE);
+            EXPECT_POSE_WITH_COVARIANCE_NEAR(origPose, rereferencedPose, DoubleTolerance);
         }
     }
 }
 
+// NOLINTNEXTLINE(readability-function-size)
 TEST_F(UtilGeometryMsgsTransformations, SameFrameReferencingTestTwist) {
-    for (geometry_msgs::PoseWithCovariance& frame : poses_) {
-        for (geometry_msgs::TwistWithCovariance& t : twists_) {
+    for (geometry_msgs::PoseWithCovariance& frame : poses) {
+        for (geometry_msgs::TwistWithCovariance& t : twists) {
             geometry_msgs::TwistWithCovariance& origTwist = t;
             geometry_msgs::TwistWithCovariance rereferencedTwist;
             rereferenceTwistWithCovariance(origTwist, frame.pose, frame.pose, rereferencedTwist);
-            EXPECT_TWIST_WITH_COVARIANCE_NEAR(origTwist, rereferencedTwist, DOUBLE_TOLERANCE);
+            EXPECT_TWIST_WITH_COVARIANCE_NEAR(origTwist, rereferencedTwist, DoubleTolerance);
         }
     }
 }
 
 TEST_F(UtilGeometryMsgsTransformations, SelfReferencingTestPose) {
-    for (geometry_msgs::PoseWithCovariance& p : poses_) {
+    for (geometry_msgs::PoseWithCovariance& p : poses) {
         geometry_msgs::PoseWithCovariance& origPose = p;
         geometry_msgs::PoseWithCovariance& frame = p;
         geometry_msgs::PoseWithCovariance rereferencedPose;
-        rereferencePoseWithCovariance(origPose, baseFrame_, frame.pose, rereferencedPose);
-        EXPECT_POSE_NEAR(p00_.pose, rereferencedPose.pose, DOUBLE_TOLERANCE);
+        rereferencePoseWithCovariance(origPose, baseFrame, frame.pose, rereferencedPose);
+        EXPECT_POSE_NEAR(p00.pose, rereferencedPose.pose, DoubleTolerance);
     }
 }
 
+// NOLINTNEXTLINE(readability-function-size)
 TEST_F(UtilGeometryMsgsTransformations, ninetyDegreeReferencingTestPose) {
 
     geometry_msgs::PoseWithCovariance pOrig, pExpected, pActual;
@@ -242,14 +247,14 @@ TEST_F(UtilGeometryMsgsTransformations, ninetyDegreeReferencingTestPose) {
     pOrig.pose.position.y = 0;
     pOrig.pose.position.z = 0;
     pOrig.pose.orientation = util_geometry_msgs::conversions::quaternionFromYaw(0.);
-    pOrig.covariance = covGroundTruthValues_;
+    pOrig.covariance = covGroundTruthValues;
 
     pExpected.pose.position.x = 0;
     pExpected.pose.position.y = -1;
     pExpected.pose.position.z = 0;
     pExpected.pose.orientation = util_geometry_msgs::conversions::quaternionFromYaw(-M_PI / 2.);
-    pExpected.covariance = covGroundTruthValues_;
+    pExpected.covariance = covGroundTruthValues;
 
-    rereferencePoseWithCovariance(pOrig, baseFrame_, frame, pActual);
-    EXPECT_POSE_WITH_COVARIANCE_NEAR(pExpected, pActual, DOUBLE_TOLERANCE);
+    rereferencePoseWithCovariance(pOrig, baseFrame, frame, pActual);
+    EXPECT_POSE_WITH_COVARIANCE_NEAR(pExpected, pActual, DoubleTolerance);
 }
