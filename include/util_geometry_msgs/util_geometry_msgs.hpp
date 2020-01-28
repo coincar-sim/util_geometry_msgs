@@ -65,9 +65,9 @@ inline void fromMsg(const geometry_msgs::Pose& msg, Eigen::Isometry3d& out) {
 
 inline void fromMsg(const geometry_msgs::Pose& msg, Eigen::Vector3d& out) {
 
-	out.x() = msg.position.x;
-	out.y() = msg.position.y;
-	out.z() = msg.position.z;
+    out.x() = msg.position.x;
+    out.y() = msg.position.y;
+    out.z() = msg.position.z;
 }
 
 
@@ -191,9 +191,9 @@ inline void eigenMatrixToBoostArray(const Eigen::Matrix<_Scalar, size, size, _ma
 }
 
 inline double yawFromPose(const geometry_msgs::Pose& pose) {
-    Eigen::Affine3d eigenPose;
+    Eigen::Isometry3d eigenPose;
     tf2::fromMsg(pose, eigenPose);
-    return util_eigen_geometry::yawFromAffine3d(eigenPose);
+    return util_eigen_geometry::yawFromIsometry3d(eigenPose);
 }
 
 inline double yawFromQuaternion(const geometry_msgs::Quaternion& quat) {
@@ -226,7 +226,7 @@ inline geometry_msgs::Transform transformFromPose(const geometry_msgs::Pose& pos
     return transform;
 }
 
-} // namespace util_geometry_msgs::conversions
+} // namespace conversions
 
 namespace checks {
 
@@ -356,7 +356,7 @@ static constexpr boost::array<double, 36> covarianceUnkownValues = {{
 static constexpr boost::array<double, 36> covarianceGroundTruthValues = {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
-} // namespace util_geometry_msgs::checks
+} // namespace checks
 
 namespace transformations {
 
@@ -437,7 +437,7 @@ void rereferenceTwistWithCovariance(const geometry_msgs::TwistWithCovariance& Tw
                                     geometry_msgs::TwistWithCovariance& transformedTwistWithCovariance);
 
 
-} // namespace util_geometry_msgs::transformations
+} // namespace transformations
 
 namespace computations {
 
@@ -460,6 +460,6 @@ geometry_msgs::Pose addDeltaPose(const geometry_msgs::Pose& startPose, const geo
 geometry_msgs::Pose subtractDeltaPose(const geometry_msgs::Pose& startPose, const geometry_msgs::Pose& deltaPose);
 
 
-} // namespace util_geometry_msgs::computations
+} // namespace computations
 
 } // namespace util_geometry_msgs

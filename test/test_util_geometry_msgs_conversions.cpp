@@ -41,16 +41,14 @@ TEST(UtilGeometryMsgsConversions, quaternionFromYaw) {
     quat = util_geometry_msgs::conversions::quaternionFromYaw(M_PI / 2.);
     EXPECT_NEAR(0., quat.x, DOUBLE_TOLERANCE);
     EXPECT_NEAR(0., quat.y, DOUBLE_TOLERANCE);
-    EXPECT_NEAR(1./sqrt(2.), quat.z, DOUBLE_TOLERANCE);
-    EXPECT_NEAR(1./sqrt(2.), quat.w, DOUBLE_TOLERANCE);
+    EXPECT_NEAR(1. / sqrt(2.), quat.z, DOUBLE_TOLERANCE);
+    EXPECT_NEAR(1. / sqrt(2.), quat.w, DOUBLE_TOLERANCE);
 
     quat = util_geometry_msgs::conversions::quaternionFromYaw(-M_PI / 4.);
     EXPECT_NEAR(0., quat.x, DOUBLE_TOLERANCE);
     EXPECT_NEAR(0., quat.y, DOUBLE_TOLERANCE);
     EXPECT_NEAR(-0.3826834323, quat.z, DOUBLE_TOLERANCE);
     EXPECT_NEAR(0.9238795325, quat.w, DOUBLE_TOLERANCE);
-
-
 }
 
 TEST(UtilGeometryMsgsConversions, pose2Isometry) {
@@ -63,23 +61,22 @@ TEST(UtilGeometryMsgsConversions, pose2Isometry) {
 
     Eigen::Isometry3d eigenPose;
     util_geometry_msgs::conversions::fromMsg(pose, eigenPose);
-    EXPECT_NEAR(1./sqrt(2.), eigenPose(0,0), DOUBLE_TOLERANCE);
-    EXPECT_NEAR(1./sqrt(2.), eigenPose(1,0), DOUBLE_TOLERANCE);
-    EXPECT_NEAR(-1./sqrt(2.), eigenPose(0,1), DOUBLE_TOLERANCE);
-    EXPECT_NEAR(1./sqrt(2.), eigenPose(1,1), DOUBLE_TOLERANCE);
+    EXPECT_NEAR(1. / sqrt(2.), eigenPose(0, 0), DOUBLE_TOLERANCE);
+    EXPECT_NEAR(1. / sqrt(2.), eigenPose(1, 0), DOUBLE_TOLERANCE);
+    EXPECT_NEAR(-1. / sqrt(2.), eigenPose(0, 1), DOUBLE_TOLERANCE);
+    EXPECT_NEAR(1. / sqrt(2.), eigenPose(1, 1), DOUBLE_TOLERANCE);
 
-    EXPECT_NEAR(1, eigenPose(0,3), DOUBLE_TOLERANCE);
-    EXPECT_NEAR(10, eigenPose(1,3), DOUBLE_TOLERANCE);
-    EXPECT_NEAR(100, eigenPose(2,3), DOUBLE_TOLERANCE);
-
+    EXPECT_NEAR(1, eigenPose(0, 3), DOUBLE_TOLERANCE);
+    EXPECT_NEAR(10, eigenPose(1, 3), DOUBLE_TOLERANCE);
+    EXPECT_NEAR(100, eigenPose(2, 3), DOUBLE_TOLERANCE);
 }
 
 TEST(UtilGeometryMsgsConversions, isometry2Pose) {
     Eigen::Isometry3d eigenPose;
 
     eigenPose.setIdentity();
-    eigenPose.translate(Eigen::Vector3d(1.,2.,3.));
-    eigenPose.rotate(Eigen::AngleAxisd(M_PI/4., Eigen::Vector3d::UnitZ()));
+    eigenPose.translate(Eigen::Vector3d(1., 2., 3.));
+    eigenPose.rotate(Eigen::AngleAxisd(M_PI / 4., Eigen::Vector3d::UnitZ()));
 
     geometry_msgs::Pose pose = util_geometry_msgs::conversions::toMsg(eigenPose);
 
@@ -87,7 +84,6 @@ TEST(UtilGeometryMsgsConversions, isometry2Pose) {
     EXPECT_DOUBLE_EQ(2., pose.position.y);
     EXPECT_DOUBLE_EQ(3., pose.position.z);
     EXPECT_NEAR(M_PI / 4., yawFromQuaternion(pose.orientation), DOUBLE_TOLERANCE);
-
 }
 
 TEST(UtilGeometryMsgsConversions, quat2EigenQuat) {
@@ -100,7 +96,6 @@ TEST(UtilGeometryMsgsConversions, quat2EigenQuat) {
     EXPECT_NEAR(quat.y, eigenQuat.y(), DOUBLE_TOLERANCE);
     EXPECT_NEAR(quat.z, eigenQuat.z(), DOUBLE_TOLERANCE);
     EXPECT_NEAR(quat.w, eigenQuat.w(), DOUBLE_TOLERANCE);
-
 }
 
 TEST(UtilGeometryMsgsConversions, yawFromQuaternion) {
@@ -112,21 +107,21 @@ TEST(UtilGeometryMsgsConversions, yawFromQuaternion) {
 }
 
 TEST(UtilGeometryMsgsConversions, boostArrayToEigenMatrix) {
-    boost::array<double, 4> array{1.,2.,3.,4.};
+    boost::array<double, 4> array{1., 2., 3., 4.};
     Eigen::Matrix2d matrix;
 
     boostArrayToEigenMatrix(array, matrix, true);
-    EXPECT_DOUBLE_EQ(1., matrix(0,0));
-    EXPECT_DOUBLE_EQ(2., matrix(0,1));
+    EXPECT_DOUBLE_EQ(1., matrix(0, 0));
+    EXPECT_DOUBLE_EQ(2., matrix(0, 1));
 
     boostArrayToEigenMatrix(array, matrix, false);
-    EXPECT_DOUBLE_EQ(1., matrix(0,0));
-    EXPECT_DOUBLE_EQ(2., matrix(1,0));
+    EXPECT_DOUBLE_EQ(1., matrix(0, 0));
+    EXPECT_DOUBLE_EQ(2., matrix(1, 0));
 }
 
 TEST(UtilGeometryMsgsConversions, eigenMatrixToBoostArray) {
     Eigen::Matrix2d matrix;
-    matrix << 1,2,3,4;
+    matrix << 1, 2, 3, 4;
 
     boost::array<double, 4> array;
 

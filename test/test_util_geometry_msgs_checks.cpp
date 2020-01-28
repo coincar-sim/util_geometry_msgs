@@ -64,7 +64,6 @@ TEST(UtilGeometryMsgsChecks, covarianceChecks) {
                                                   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,  0.0, 0.0};
 
 
-
     EXPECT_TRUE(covarianceMatrixValid(covNonSetValues_));
     EXPECT_TRUE(covarianceMatrixValid(covGroundTruthValues_));
     EXPECT_TRUE(covarianceMatrixValid(covArbitraryDiagValuesValid_));
@@ -91,5 +90,4 @@ TEST(UtilGeometryMsgsChecks, poseContainsNANs) {
 
     pose.position.x = NAN;
     EXPECT_TRUE(containsNANs(pose));
-
 }
