@@ -278,16 +278,16 @@ TEST(UtilGeometryMsgsTransformationsTest, DifferentFramesRereferencingTestTwist)
     origTwist.linear.y = 0.0;
     origTwist.linear.z = 0.0;
     origTwist.angular.x = 0.0;
-    origTwist.angular.y = 0.0;
+    origTwist.angular.y = 0.5;
     origTwist.angular.z = 0.0;
 
     geometry_msgs::Twist rereferencedTwistExpected;
-    origTwist.linear.x = 0.0;
-    origTwist.linear.y = 1.0;
-    origTwist.linear.z = 0.0;
-    origTwist.angular.x = 0.0;
-    origTwist.angular.y = 0.0;
-    origTwist.angular.z = 0.0;
+    rereferencedTwistExpected.linear.x = 0.0;
+    rereferencedTwistExpected.linear.y = -1.0;
+    rereferencedTwistExpected.linear.z = 0.0;
+    rereferencedTwistExpected.angular.x = 0.5;
+    rereferencedTwistExpected.angular.y = 0.0;
+    rereferencedTwistExpected.angular.z = 0.0;
 
     geometry_msgs::Twist rereferencedTwist;
     rereferenceTwist(origTwist, poseFrom, poseTo, rereferencedTwist);
