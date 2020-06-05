@@ -258,3 +258,38 @@ TEST_F(UtilGeometryMsgsTransformations, ninetyDegreeReferencingTestPose) {
     rereferencePoseWithCovariance(pOrig, baseFrame, frame, pActual);
     EXPECT_POSE_WITH_COVARIANCE_NEAR(pExpected, pActual, DoubleTolerance);
 }
+
+
+TEST(UtilGeometryMsgsTransformationsTest, DifferentFramesRereferencingTestTwist) {
+    geometry_msgs::Pose poseTo;
+    poseTo.position.x = 353.0;
+    poseTo.position.y = 13231.0;
+    poseTo.position.z = 92897.0;
+    poseTo.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI / 2.);
+
+    geometry_msgs::Pose poseFrom;
+    poseFrom.position.x = 0.0;
+    poseFrom.position.y = 0.0;
+    poseFrom.position.z = 0.0;
+    poseFrom.orientation = util_geometry_msgs::conversions::quaternionFromYaw(0.);
+
+    geometry_msgs::Twist origTwist;
+    origTwist.linear.x = 1.0;
+    origTwist.linear.y = 0.0;
+    origTwist.linear.z = 0.0;
+    origTwist.angular.x = 0.0;
+    origTwist.angular.y = 0.5;
+    origTwist.angular.z = 0.0;
+
+    geometry_msgs::Twist rereferencedTwistExpected;
+    rereferencedTwistExpected.linear.x = 0.0;
+    rereferencedTwistExpected.linear.y = -1.0;
+    rereferencedTwistExpected.linear.z = 0.0;
+    rereferencedTwistExpected.angular.x = 0.5;
+    rereferencedTwistExpected.angular.y = 0.0;
+    rereferencedTwistExpected.angular.z = 0.0;
+
+    geometry_msgs::Twist rereferencedTwist;
+    rereferenceTwist(origTwist, poseFrom, poseTo, rereferencedTwist);
+    EXPECT_TWIST_NEAR(rereferencedTwistExpected, rereferencedTwist, DoubleTolerance);
+}
