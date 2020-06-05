@@ -113,8 +113,8 @@ void rereferenceTwist(const geometry_msgs::Twist& twist,
     angularTwistEigenTransformed = transform.linear() * angularTwistEigen;
     // tf2::fromMsg(linearTwistEigen, transformedTwist.linear);
     // tf2::fromMsg(angularTwistEigen, transformedTwist.angular);
-    transformedTwist.linear = conversions::toMsg<geometry_msgs::Vector3>(linearTwistEigen);
-    transformedTwist.angular = conversions::toMsg<geometry_msgs::Vector3>(angularTwistEigen);
+    transformedTwist.linear = conversions::toMsg<geometry_msgs::Vector3>(linearTwistEigenTransformed);
+    transformedTwist.angular = conversions::toMsg<geometry_msgs::Vector3>(angularTwistEigenTransformed);
 }
 
 void rereferenceCovariance(const geometry_msgs::PoseWithCovariance::_covariance_type& covariance,
