@@ -291,5 +291,5 @@ TEST(UtilGeometryMsgsTransformationsTest, DifferentFramesRereferencingTestTwist)
 
     geometry_msgs::Twist rereferencedTwist;
     rereferenceTwist(origTwist, poseFrom, poseTo, rereferencedTwist);
-    EXPECT_TWIST_NEAR(rereferencedTwistExpected, rereferencedTwist, DOUBLE_TOLERANCE);
+    EXPECT_TWIST_NEAR(rereferencedTwistExpected, rereferencedTwist, DoubleTolerance);
 }
