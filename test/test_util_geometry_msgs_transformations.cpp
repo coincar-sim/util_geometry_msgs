@@ -30,46 +30,51 @@
 
 #include "gtest/gtest.h"
 
-#define EXPECT_COVARIANCE_NEAR(expected, actual, abs_err)                     \
-    {                                                                         \
-        ASSERT_EQ(36u, expected.size()) << "A covariance must have size 36!"; \
-        ASSERT_EQ(36u, actual.size()) << "A covariance must have size 36!";   \
-        for (std::size_t i = 0; i < 36u; ++i) {                               \
-            EXPECT_NEAR(expected[i], actual[i], abs_err);                     \
-        }                                                                     \
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define EXPECT_COVARIANCE_NEAR(expected, actual, abs_err)                       \
+    {                                                                           \
+        ASSERT_EQ(36u, (expected).size()) << "A covariance must have size 36!"; \
+        ASSERT_EQ(36u, (actual).size()) << "A covariance must have size 36!";   \
+        for (std::size_t i = 0; i < 36u; ++i) {                                 \
+            EXPECT_NEAR((expected)[i], (actual)[i], abs_err);                   \
+        }                                                                       \
     }
 
-#define EXPECT_POSE_NEAR(expected, actual, abs_error)                         \
-    {                                                                         \
-        EXPECT_NEAR(expected.position.x, actual.position.x, abs_error);       \
-        EXPECT_NEAR(expected.position.y, actual.position.y, abs_error);       \
-        EXPECT_NEAR(expected.position.z, actual.position.z, abs_error);       \
-        EXPECT_NEAR(expected.orientation.x, actual.orientation.x, abs_error); \
-        EXPECT_NEAR(expected.orientation.y, actual.orientation.y, abs_error); \
-        EXPECT_NEAR(expected.orientation.z, actual.orientation.z, abs_error); \
-        EXPECT_NEAR(expected.orientation.w, actual.orientation.w, abs_error); \
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define EXPECT_POSE_NEAR(expected, actual, abs_error)                             \
+    {                                                                             \
+        EXPECT_NEAR((expected).position.x, (actual).position.x, abs_error);       \
+        EXPECT_NEAR((expected).position.y, (actual).position.y, abs_error);       \
+        EXPECT_NEAR((expected).position.z, (actual).position.z, abs_error);       \
+        EXPECT_NEAR((expected).orientation.x, (actual).orientation.x, abs_error); \
+        EXPECT_NEAR((expected).orientation.y, (actual).orientation.y, abs_error); \
+        EXPECT_NEAR((expected).orientation.z, (actual).orientation.z, abs_error); \
+        EXPECT_NEAR((expected).orientation.w, (actual).orientation.w, abs_error); \
     }
 
-#define EXPECT_POSE_WITH_COVARIANCE_NEAR(expected, actual, abs_error)              \
-    {                                                                              \
-        EXPECT_POSE_NEAR(expected.pose, actual.pose, abs_error);                   \
-        EXPECT_COVARIANCE_NEAR(expected.covariance, actual.covariance, abs_error); \
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define EXPECT_POSE_WITH_COVARIANCE_NEAR(expected, actual, abs_error)                  \
+    {                                                                                  \
+        EXPECT_POSE_NEAR((expected).pose, (actual).pose, abs_error);                   \
+        EXPECT_COVARIANCE_NEAR((expected).covariance, (actual).covariance, abs_error); \
     }
 
-#define EXPECT_TWIST_NEAR(expected, actual, abs_error)                \
-    {                                                                 \
-        EXPECT_NEAR(expected.linear.x, actual.linear.x, abs_error);   \
-        EXPECT_NEAR(expected.linear.y, actual.linear.y, abs_error);   \
-        EXPECT_NEAR(expected.linear.z, actual.linear.z, abs_error);   \
-        EXPECT_NEAR(expected.angular.x, actual.angular.x, abs_error); \
-        EXPECT_NEAR(expected.angular.y, actual.angular.y, abs_error); \
-        EXPECT_NEAR(expected.angular.z, actual.angular.z, abs_error); \
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define EXPECT_TWIST_NEAR(expected, actual, abs_error)                    \
+    {                                                                     \
+        EXPECT_NEAR((expected).linear.x, (actual).linear.x, abs_error);   \
+        EXPECT_NEAR((expected).linear.y, (actual).linear.y, abs_error);   \
+        EXPECT_NEAR((expected).linear.z, (actual).linear.z, abs_error);   \
+        EXPECT_NEAR((expected).angular.x, (actual).angular.x, abs_error); \
+        EXPECT_NEAR((expected).angular.y, (actual).angular.y, abs_error); \
+        EXPECT_NEAR((expected).angular.z, (actual).angular.z, abs_error); \
     }
 
-#define EXPECT_TWIST_WITH_COVARIANCE_NEAR(expected, actual, abs_error)             \
-    {                                                                              \
-        EXPECT_TWIST_NEAR(expected.twist, actual.twist, abs_error);                \
-        EXPECT_COVARIANCE_NEAR(expected.covariance, actual.covariance, abs_error); \
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define EXPECT_TWIST_WITH_COVARIANCE_NEAR(expected, actual, abs_error)                 \
+    {                                                                                  \
+        EXPECT_TWIST_NEAR((expected).twist, (actual).twist, abs_error);                \
+        EXPECT_COVARIANCE_NEAR((expected).covariance, (actual).covariance, abs_error); \
     }
 
 
@@ -178,26 +183,29 @@ protected:
         baseFrame.orientation = util_geometry_msgs::conversions::quaternionFromYaw(0.);
     }
 
-    CovarianceType covGroundTruthValues{};
-    CovarianceType covArbitraryDiagValuesValid{};
-    CovarianceType covArbitraryValuesValid{};
+    CovarianceType covGroundTruthValues{};        // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    CovarianceType covArbitraryDiagValuesValid{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    CovarianceType covArbitraryValuesValid{};     // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
 
-    geometry_msgs::PoseWithCovariance p00{};
-    geometry_msgs::PoseWithCovariance p10{};
-    geometry_msgs::PoseWithCovariance p130{};
-    geometry_msgs::TwistWithCovariance t00{};
-    geometry_msgs::TwistWithCovariance t10{};
-    geometry_msgs::TwistWithCovariance t123{};
+    geometry_msgs::PoseWithCovariance p00{};   // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    geometry_msgs::PoseWithCovariance p10{};   // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    geometry_msgs::PoseWithCovariance p130{};  // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    geometry_msgs::TwistWithCovariance t00{};  // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    geometry_msgs::TwistWithCovariance t10{};  // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    geometry_msgs::TwistWithCovariance t123{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
 
-    geometry_msgs::AccelWithCovariance a00{};
-    geometry_msgs::AccelWithCovariance a10{};
-    geometry_msgs::AccelWithCovariance a123{};
+    geometry_msgs::AccelWithCovariance a00{};  // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    geometry_msgs::AccelWithCovariance a10{};  // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    geometry_msgs::AccelWithCovariance a123{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
 
-    std::vector<geometry_msgs::PoseWithCovariance> poses{};
-    std::vector<geometry_msgs::TwistWithCovariance> twists{};
-    std::vector<geometry_msgs::AccelWithCovariance> accels{};
+    std::vector<geometry_msgs::PoseWithCovariance>
+        poses{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    std::vector<geometry_msgs::TwistWithCovariance>
+        twists{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    std::vector<geometry_msgs::AccelWithCovariance>
+        accels{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
 
-    geometry_msgs::Pose baseFrame{};
+    geometry_msgs::Pose baseFrame{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
 };
 
 // NOLINTNEXTLINE(readability-function-size)
@@ -237,7 +245,9 @@ TEST_F(UtilGeometryMsgsTransformations, SelfReferencingTestPose) {
 // NOLINTNEXTLINE(readability-function-size)
 TEST_F(UtilGeometryMsgsTransformations, ninetyDegreeReferencingTestPose) {
 
-    geometry_msgs::PoseWithCovariance pOrig, pExpected, pActual;
+    geometry_msgs::PoseWithCovariance pOrig;
+    geometry_msgs::PoseWithCovariance pExpected;
+    geometry_msgs::PoseWithCovariance pActual;
 
     geometry_msgs::Pose frame;
     frame.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI / 2.);
