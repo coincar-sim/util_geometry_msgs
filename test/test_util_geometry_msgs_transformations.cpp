@@ -30,6 +30,7 @@
 
 #include "gtest/gtest.h"
 
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define EXPECT_COVARIANCE_NEAR(expected, actual, abs_err)                       \
     {                                                                           \
         ASSERT_EQ(36u, (expected).size()) << "A covariance must have size 36!"; \
@@ -39,6 +40,7 @@
         }                                                                       \
     }
 
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define EXPECT_POSE_NEAR(expected, actual, abs_error)                             \
     {                                                                             \
         EXPECT_NEAR((expected).position.x, (actual).position.x, abs_error);       \
@@ -50,12 +52,14 @@
         EXPECT_NEAR((expected).orientation.w, (actual).orientation.w, abs_error); \
     }
 
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define EXPECT_POSE_WITH_COVARIANCE_NEAR(expected, actual, abs_error)                  \
     {                                                                                  \
         EXPECT_POSE_NEAR((expected).pose, (actual).pose, abs_error);                   \
         EXPECT_COVARIANCE_NEAR((expected).covariance, (actual).covariance, abs_error); \
     }
 
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define EXPECT_TWIST_NEAR(expected, actual, abs_error)                    \
     {                                                                     \
         EXPECT_NEAR((expected).linear.x, (actual).linear.x, abs_error);   \
@@ -66,6 +70,7 @@
         EXPECT_NEAR((expected).angular.z, (actual).angular.z, abs_error); \
     }
 
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define EXPECT_TWIST_WITH_COVARIANCE_NEAR(expected, actual, abs_error)                 \
     {                                                                                  \
         EXPECT_TWIST_NEAR((expected).twist, (actual).twist, abs_error);                \
