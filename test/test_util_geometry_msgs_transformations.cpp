@@ -178,26 +178,26 @@ protected:
         baseFrame.orientation = util_geometry_msgs::conversions::quaternionFromYaw(0.);
     }
 
-    CovarianceType covGroundTruthValues{};
-    CovarianceType covArbitraryDiagValuesValid{};
-    CovarianceType covArbitraryValuesValid{};
+    CovarianceType covGroundTruthValues{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    CovarianceType covArbitraryDiagValuesValid{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    CovarianceType covArbitraryValuesValid{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
 
-    geometry_msgs::PoseWithCovariance p00{};
-    geometry_msgs::PoseWithCovariance p10{};
-    geometry_msgs::PoseWithCovariance p130{};
-    geometry_msgs::TwistWithCovariance t00{};
-    geometry_msgs::TwistWithCovariance t10{};
-    geometry_msgs::TwistWithCovariance t123{};
+    geometry_msgs::PoseWithCovariance p00{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    geometry_msgs::PoseWithCovariance p10{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    geometry_msgs::PoseWithCovariance p130{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    geometry_msgs::TwistWithCovariance t00{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    geometry_msgs::TwistWithCovariance t10{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    geometry_msgs::TwistWithCovariance t123{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
 
-    geometry_msgs::AccelWithCovariance a00{};
-    geometry_msgs::AccelWithCovariance a10{};
-    geometry_msgs::AccelWithCovariance a123{};
+    geometry_msgs::AccelWithCovariance a00{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    geometry_msgs::AccelWithCovariance a10{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    geometry_msgs::AccelWithCovariance a123{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
 
-    std::vector<geometry_msgs::PoseWithCovariance> poses{};
-    std::vector<geometry_msgs::TwistWithCovariance> twists{};
-    std::vector<geometry_msgs::AccelWithCovariance> accels{};
+    std::vector<geometry_msgs::PoseWithCovariance> poses{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    std::vector<geometry_msgs::TwistWithCovariance> twists{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
+    std::vector<geometry_msgs::AccelWithCovariance> accels{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
 
-    geometry_msgs::Pose baseFrame{};
+    geometry_msgs::Pose baseFrame{}; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
 };
 
 // NOLINTNEXTLINE(readability-function-size)
