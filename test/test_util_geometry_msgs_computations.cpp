@@ -37,7 +37,9 @@ using namespace util_geometry_msgs::computations;
 static const double DoubleTolerance = 10.e-9;
 
 TEST(UtilGeometryMsgsComputations, calcDeltaPose) {
-    geometry_msgs::Pose p0, p1, deltaPose;
+    geometry_msgs::Pose p0;
+    geometry_msgs::Pose p1;
+    geometry_msgs::Pose deltaPose;
 
     p0.position.x = 20.;
     p0.position.y = 0.;
@@ -60,7 +62,9 @@ TEST(UtilGeometryMsgsComputations, calcDeltaPose) {
 }
 
 TEST(UtilGeometryMsgsComputations, interpolateBetweenPoses) {
-    geometry_msgs::Pose p0, p1, interp;
+    geometry_msgs::Pose p0;
+    geometry_msgs::Pose p1;
+    geometry_msgs::Pose interp;
 
     p0.position.x = 1.;
     p0.position.y = 1.;
@@ -72,7 +76,9 @@ TEST(UtilGeometryMsgsComputations, interpolateBetweenPoses) {
     p1.position.z = 1000.;
     p1.orientation = util_geometry_msgs::conversions::quaternionFromYaw(M_PI);
 
-    Eigen::Isometry3d p0Eigen, p1Eigen, interpEigen;
+    Eigen::Isometry3d p0Eigen;
+    Eigen::Isometry3d p1Eigen;
+    Eigen::Isometry3d interpEigen;
     util_geometry_msgs::conversions::fromMsg(p0, p0Eigen);
     util_geometry_msgs::conversions::fromMsg(p1, p1Eigen);
 
@@ -94,7 +100,9 @@ TEST(UtilGeometryMsgsComputations, interpolateBetweenPoses) {
 }
 
 TEST(UtilGeometryMsgsComputations, addDeltaPose) {
-    geometry_msgs::Pose p0, p1, deltaPose;
+    geometry_msgs::Pose p0;
+    geometry_msgs::Pose p1;
+    geometry_msgs::Pose deltaPose;
 
     p0.position.x = 1.;
     p0.position.y = 0.;
@@ -117,7 +125,9 @@ TEST(UtilGeometryMsgsComputations, addDeltaPose) {
 }
 
 TEST(UtilGeometryMsgsComputations, subtractDeltaPose) {
-    geometry_msgs::Pose p0, p1, deltaPose;
+    geometry_msgs::Pose p0;
+    geometry_msgs::Pose p1;
+    geometry_msgs::Pose deltaPose;
 
     p1.position.x = -9.;
     p1.position.y = 1.;

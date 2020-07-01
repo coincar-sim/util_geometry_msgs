@@ -451,15 +451,13 @@ geometry_msgs::Pose calcDeltaPose(const geometry_msgs::Pose& startPose, const ge
 
 geometry_msgs::Point interpolateBetweenPoints(const geometry_msgs::Point& p0,
                                               const geometry_msgs::Point& p1,
-                                              const double scale);
+                                              double scale);
 
 geometry_msgs::Quaternion interpolateBetweenQuaternions(const geometry_msgs::Quaternion& o0,
                                                         const geometry_msgs::Quaternion& o1,
-                                                        const double scale);
+                                                        double scale);
 
-geometry_msgs::Pose interpolateBetweenPoses(const geometry_msgs::Pose& p0,
-                                            const geometry_msgs::Pose& p1,
-                                            const double scale);
+geometry_msgs::Pose interpolateBetweenPoses(const geometry_msgs::Pose& p0, const geometry_msgs::Pose& p1, double scale);
 
 geometry_msgs::Pose addDeltaPose(const geometry_msgs::Pose& startPose, const geometry_msgs::Pose& deltaPose);
 

@@ -69,7 +69,8 @@ namespace transformations {
 void transformFromPoses(const geometry_msgs::Pose& oldFrame,
                         const geometry_msgs::Pose& newFrame,
                         Eigen::Isometry3d& transform) {
-    Eigen::Isometry3d oldFrameTransformEigen, newFrameTransformEigen;
+    Eigen::Isometry3d oldFrameTransformEigen;
+    Eigen::Isometry3d newFrameTransformEigen;
     // tf2::fromMsg(oldFrame, oldFrameTransformEigen);
     // tf2::fromMsg(newFrame, newFrameTransformEigen);
     conversions::fromMsg(oldFrame, oldFrameTransformEigen);
@@ -87,7 +88,8 @@ void rereferencePose(const geometry_msgs::Pose& pose,
     transformations::transformFromPoses(oldFrame, newFrame, transform);
 
     // perform the actual transformation
-    Eigen::Isometry3d poseEigen, transformedPoseEigen;
+    Eigen::Isometry3d poseEigen;
+    Eigen::Isometry3d transformedPoseEigen;
     // tf2::fromMsg(pose, poseEigen);
     conversions::fromMsg(pose, poseEigen);
     transformedPoseEigen = transform * poseEigen;
@@ -104,7 +106,10 @@ void rereferenceTwist(const geometry_msgs::Twist& twist,
     transformFromPoses(oldFrame, newFrame, transform);
 
     // Transform the Twist
-    Eigen::Vector3d linearTwistEigen, angularTwistEigen, linearTwistEigenTransformed, angularTwistEigenTransformed;
+    Eigen::Vector3d linearTwistEigen;
+    Eigen::Vector3d angularTwistEigen;
+    Eigen::Vector3d linearTwistEigenTransformed;
+    Eigen::Vector3d angularTwistEigenTransformed;
     // tf2::fromMsg(twist.linear, linearTwistEigen);
     // tf2::fromMsg(twist.angular, angularTwistEigen);
     conversions::fromMsg(twist.linear, linearTwistEigen);
@@ -183,7 +188,10 @@ namespace computations {
 geometry_msgs::Pose calcDeltaPose(const geometry_msgs::Pose& startPose, const geometry_msgs::Pose& endPose) {
     // we have: fixed frame <--T_ff_sP-- startPose  AND  fixed frame <--T_ff_eP-- endPose
     // we want: startPose <--T_sP_eP-- endPose ( = deltaPose )
-    Eigen::Isometry3d startPoseEigen, endPoseEigen, startPoseEigenInv, deltaPoseEigen;
+    Eigen::Isometry3d startPoseEigen;
+    Eigen::Isometry3d endPoseEigen;
+    Eigen::Isometry3d startPoseEigenInv;
+    Eigen::Isometry3d deltaPoseEigen;
     geometry_msgs::Pose deltaPoseGeom;
 
     tf::poseMsgToEigen(startPose, startPoseEigen);
@@ -227,7 +235,9 @@ geometry_msgs::Quaternion interpolateBetweenQuaternions(const geometry_msgs::Qua
     throwIfScaleInvalid(scale);
     geometry_msgs::Quaternion interpolOrientation;
 
-    tf2::Quaternion tfQuat0, tfQuat1, tfQuatInterpol;
+    tf2::Quaternion tfQuat0;
+    tf2::Quaternion tfQuat1;
+    tf2::Quaternion tfQuatInterpol;
     tf2::fromMsg(o0, tfQuat0);
     tf2::fromMsg(o1, tfQuat1);
     tfQuatInterpol = tfQuat0.slerp(tfQuat1, scale).normalized();
@@ -253,7 +263,9 @@ geometry_msgs::Pose addDeltaPose(const geometry_msgs::Pose& startPose, const geo
     // we have: fixed frame <--T_ff_sP-- startPose <--T_sP_dP-- deltaPose
     // we want: fixed frame <--T_ff_dP-- deltaPose
 
-    Eigen::Isometry3d startPoseEigen, deltaPoseEigen, newPoseEigen;
+    Eigen::Isometry3d startPoseEigen;
+    Eigen::Isometry3d deltaPoseEigen;
+    Eigen::Isometry3d newPoseEigen;
     geometry_msgs::Pose newPoseGeom;
 
     tf::poseMsgToEigen(startPose, startPoseEigen);
@@ -281,7 +293,10 @@ geometry_msgs::Pose addDeltaPose(const geometry_msgs::Pose& startPose, const geo
 geometry_msgs::Pose subtractDeltaPose(const geometry_msgs::Pose& startPose, const geometry_msgs::Pose& deltaPose) {
     // we have: fixed frame <--T_ff_sP-- startPose  AND  deltaPose <--T_dP_sP-- startPose
     // we want: fixed frame <--T_ff_dP-- deltaPose
-    Eigen::Isometry3d startPoseEigen, deltaPoseEigen, deltaPoseEigenInv, newPoseEigen;
+    Eigen::Isometry3d startPoseEigen;
+    Eigen::Isometry3d deltaPoseEigen;
+    Eigen::Isometry3d deltaPoseEigenInv;
+    Eigen::Isometry3d newPoseEigen;
     geometry_msgs::Pose newPoseGeom;
 
     tf::poseMsgToEigen(startPose, startPoseEigen);
