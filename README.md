@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.org/coincar-sim/util_geometry_msgs.svg)](https://travis-ci.org/coincar-sim/util_geometry_msgs)
+
 # util_geometry_msgs
 
 Library providing utility functions for **geometry_msgs**.
